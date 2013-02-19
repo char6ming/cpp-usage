@@ -1,0 +1,28 @@
+code@PcOfcCode:$ ssh-keygen -t rsa -C "caoliuming@163.com"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/code/.ssh/id_rsa): caoliuming_163_rsa
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in caoliuming_163_rsa.
+Your public key has been saved in caoliuming_163_rsa.pub.
+The key fingerprint is:
+e0:fc:8c:f2:d6:59:78:b3:65:cc:cd:91:6f:0e:4b:8f caoliuming@163.com
+The key's randomart image is:
++--[ RSA 2048]----+
+|                 |
+|                 |
+|      .        . |
+|     o .      o  |
+|      o S. o o o |
+|       +. + = = o|
+|    . ..o+ = . B |
+|     o. o .   E o|
+|     ..          |
++-----------------+
+
+
+code@PcOfcCode:$ sudo apt-get install xclip
+
+code@PcOfcCode:$ xclip -sel clip < ~/.ssh/caoliuming_163_rsa.pub
+
+
