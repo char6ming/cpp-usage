@@ -3,6 +3,7 @@
 
 #include <assert_x.hpp>
 #include <file_utilitis.hpp>
+#include <time_utilitis.hpp>
 
 #endif // __MISCELLANEOUS_HPP__
 

@@ -1,6 +1,14 @@
 #ifndef __FILE_UTILITIS_HPP__
 #define __FILE_UTILITIS_HPP__
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <errno.h>
+
 #define BUF_SIZE			((1024)*(1))
 
 inline const long long get_file_size (const char *const file)
