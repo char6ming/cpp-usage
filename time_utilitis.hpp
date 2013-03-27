@@ -43,7 +43,7 @@ inline int make_time_str (char *tm_str, int str_len, TimeStrType which_type)
 	INSIST (tm_str != NULL, "tm_str is NULL");
 	INSIST (str_len >= 30, "str_len longer than 30 but got %d", str_len);
 
-	return WHOLE_DATA == which_type ? make_time_data_str (tm_str, str_len): make_time_raw_str (tm_str, str_len);
+	return WHOLE_DATA == which_type ? make_time_data_str (tm_str, str_len) : make_time_raw_str (tm_str, str_len);
 }
 
 #endif // __TIME_UTILITIS_HPP__
