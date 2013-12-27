@@ -7,7 +7,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <errno.h>
+#include <pthread.h>
+#include <signal.h>
+
 
 #define BUF_SIZE			((1024)*(1))
 
@@ -83,5 +87,77 @@ inline int get_file_content (const char *const file, char *out_buf, int out_buf_
 	return rt_val;
 }
 
-#endif // __FILE_UTILITIS_HPP__
+inline int exec_cmd (const char *cmd, char *ret_buf, int max_buf_size)
+{
+	FILE* fp = popen (cmd, "r");
 
+	if (NULL == fp) {
+
+		return -1;
+	}
+
+	int len = 0;
+	char *p = NULL;
+     
+	while (1) {
+		if ((NULL == (p = fgets (ret_buf + len, max_buf_size - len, fp))) || (len + 1 == max_buf_size)) {
+
+			break;
+		}
+
+		len += strlen (p);
+	}
+
+	pclose (fp);
+
+	return len + 1 == max_buf_size ? -2 : len;
+}
+
+int daemonize (void)
+{
+	pid_t pid = fork ();
+
+	if (pid < 0) {
+
+		return -1;
+	} else if (pid > 0) {
+
+		exit (-1);
+	}
+
+	umask (0);
+
+	pid_t sid = setsid ();
+
+	if (sid < 0) {
+
+		return -2;
+	}
+
+	if (chdir ("/") < 0) {
+
+		return -3;
+	}
+
+	close (STDIN_FILENO);
+	close (STDOUT_FILENO);
+	close (STDERR_FILENO);
+
+	open ("/dev/null", O_RDONLY);
+	open ("/dev/null", O_RDWR);
+	open ("/dev/null", O_RDWR);
+
+	// we should block sigpipe if use socket syscall
+	sigset_t signal_mask;
+	sigemptyset (&signal_mask);
+	sigaddset (&signal_mask, SIGPIPE);
+	if (pthread_sigmask (SIG_BLOCK, &signal_mask, NULL)) {
+		printf ("%s: %d: block sigpipe failure\n", __FILE__, __LINE__);
+
+		return -4;
+	}
+
+	return 0;
+}
+
+#endif // __FILE_UTILITIS_HPP__
